@@ -1,5 +1,6 @@
 package com.hx.springboot.redis;
 
+import com.hx.springboot.redis.mutex.LogicService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,22 +17,28 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class SpringbootRedisTest {
     @Autowired
     private RedisService redisService;
+    @Autowired
+    private LogicService logicService;
 
     @Test
     public void redisTest() {
-        redisService.set("myname", "kobe");
+//        redisService.set("hello", "world");
+//        String name = redisService.get("hello");
+//        System.out.println("name:"+name);
+
         Student s = new Student();
         s.setId("001");
         s.setName("kobe");
         s.setGrade("一年级");
         s.setAge("8");
         redisService.set(s);
-
-        String name = redisService.get("myname");
-        System.out.println("name:"+name);
-
         Student stu = redisService.getStudent("001");
         System.out.println(stu);
+    }
+
+    @Test
+    public void testMutexLock(){
+        logicService.redisLock(1);
     }
 }
 
